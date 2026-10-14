@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'store',  # our e-commerce app
 ]
 
 MIDDLEWARE = [
@@ -116,6 +117,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STRIPE_SECRET_KEY='***'
+STRIPE_PUBLISHABLE_KEY='***'
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration

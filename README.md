@@ -44,5 +44,8 @@ git log --all --diff-filter=A -- <filename>
 # 4. Force push
 git push origin <branch> --force
 
+# superuser id
+
+
 ```
 
