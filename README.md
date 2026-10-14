@@ -49,6 +49,10 @@ You need **TWO terminals running** — Django server + Stripe webhook listener.
 cd ~/degree/ecommerce_project
 source venv/bin/activate
 python manage.py runserver 8090
+stripe listen --forward-to localhost:8090/webhook/ --all-snapshot
+
+
+
 ```
 
 Server runs at: http://localhost:8090/
