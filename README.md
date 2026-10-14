@@ -27,5 +27,22 @@ ssh -T git@github.com
 - for speed
 - standard
 
+# 1. Remove file from ALL commits
+git filter-branch --force \
+  --index-filter 'git rm --cached --ignore-unmatch <filename>' \
+  --prune-empty --tag-name-filter '*' -- --all
+
+# 2. Clean up old refs
+rm -rf .git/refs/original/
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
+
+# 3. Verify
+git log --all --diff-filter=A -- <filename>
+# (empty = gone)
+
+# 4. Force push
+git push origin <branch> --force
+
 ```
 
