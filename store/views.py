@@ -6,6 +6,13 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Product, Category, HomepageImage, Order, OrderItem
 
+def get_base_url(request):
+    """Get the base URL for the current environment"""
+    if request.is_secure():
+        return f'https://{request.get_host()}'
+    return f'http://{request.get_host()}'
+
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -193,11 +200,12 @@ def process_checkout(request):
         })
 
     # Step 3: Create Stripe Checkout Session with ALL items
+    base_url = get_base_url(request)
     session = stripe.checkout.Session.create(
         line_items=line_items,
         mode='payment',
-        success_url=f'http://localhost:8090/success/{order.id}/',
-        cancel_url=f'http://localhost:8090/cart/',
+        success_url=f'{base_url}/success/{order.id}/',
+        cancel_url=f'{base_url}/cart/',
     )
 
     # Step 4: Save session ID to order
@@ -278,6 +286,9 @@ def send_receipt_email(order):
     """Send order receipt email to customer after payment"""
     from django.core.mail import EmailMessage
     from django.template.loader import render_to_string
+    from django.conf import settings as dj_settings
+
+    base_url = 'https://' + dj_settings.ALLOWED_HOSTS[0] if dj_settings.ALLOWED_HOSTS else 'http://localhost:8090'
 
     # Render HTML email from template
     html_content = render_to_string('store/email_receipt.html', {'order': order})
@@ -301,7 +312,7 @@ Shipping to:
 {order.name}
 {order.address}
 
-Track your order at: http://localhost:8090/track/
+Track your order at: {base_url}/track/
 
 Your Shop
     """.strip()
