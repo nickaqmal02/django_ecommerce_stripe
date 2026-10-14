@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Helvetica', 'Arial', sans-serif; color: #111; padding: 40px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; border-bottom: 3px solid #111; padding-bottom: 20px; }
+        .shop-name { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; }
+        .order-info { text-align: right; }
+        .order-info h2 { font-size: 24px; font-weight: 900; }
+        .order-info p { font-size: 14px; color: #666; }
+        .status-paid { color: #16a34a; font-weight: bold; }
+        .status-pending { color: #ca8a04; font-weight: bold; }
+        .section { margin-bottom: 30px; }
+        .section-title { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #999; margin-bottom: 10px; }
+        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .items-table th { text-align: left; font-size: 11px; text-transform: uppercase; color: #999; padding: 10px 0; border-bottom: 2px solid #111; }
+        .items-table td { padding: 12px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .items-table .right { text-align: right; }
+        .total-row { font-size: 18px; font-weight: 900; }
+        .details-grid { display: flex; gap: 60px; }
+        .details-col { flex: 1; }
+        .details-col p { font-size: 14px; margin-bottom: 4px; }
+        .details-col .label { font-size: 11px; text-transform: uppercase; color: #999; }
+        .footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; font-size: 12px; color: #999; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <div class="shop-name">Your Shop</div>
+            <p style="font-size: 12px; color: #999; margin-top: 4px;">www.yourshop.com</p>
+        </div>
+        <div class="order-info">
+            <h2>{{ order.order_id }}</h2>
+            <p>{{ order.created_at|date:"d M Y, H:i" }}</p>
+            <p>
+                Status:
+                {% if order.paid %}
+                    <span class="status-paid">PAID</span>
+                {% else %}
+                    <span class="status-pending">PENDING</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="section">
+        <p class="section-title">Items Ordered</p>
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th class="right">Qty</th>
+                    <th class="right">Price</th>
+                    <th class="right">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td class="right">{{ item.quantity }}</td>
+                    <td class="right">RM {{ item.price_at_purchase|floatformat:2 }}</td>
+                    <td class="right">{{ item.line_total_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="right total-row">Total</td>
+                    <td class="right total-row">{{ order.total_display }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="section">
+        <p class="section-title">Customer & Shipping</p>
+        <div class="details-grid">
+            <div class="details-col">
+                <p class="label">Name</p>
+                <p>{{ order.name }}</p>
+                <br>
+                <p class="label">Email</p>
+                <p>{{ order.email }}</p>
+                <br>
+                <p class="label">Phone</p>
+                <p>{{ order.phone }}</p>
+            </div>
+            <div class="details-col">
+                <p class="label">Shipping Address</p>
+                <p>{{ order.address|linebreaksbr }}</p>
+                <br>
+                <p class="label">Courier</p>
+                <p>{% if order.courier == 'none' %}Not Assigned{% else %}{{ order.get_courier_display }}{% endif %}</p>
+                <br>
+                <p class="label">Tracking Number</p>
+                <p>{% if order.tracking_number %}{{ order.tracking_number }}{% else %}Not Available{% endif %}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        This is a computer-generated document from Your Shop.<br>
+        Order {{ order.order_id }} &middot; Generated on {% now "d M Y, H:i" %}
+    </div>
+
+</body>
+</html>

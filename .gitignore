@@ -1,4 +1,48 @@
+# Secrets
+.env
+.env.local
+*.env
+
+# SSH keys
 AllKey
 AllKey.pub
+id_ed25519
+id_rsa
+*.pem
+*.key
+
+# Database
 db.sqlite3
+db.sqlite3-journal
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv
+
+# Django
+staticfiles/
+media/
+local_settings.py
+
+# Privacy
 Privacy.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Stripe
+.stripe/

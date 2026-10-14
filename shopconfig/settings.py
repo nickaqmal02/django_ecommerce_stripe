@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+# Load .env file
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +36,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'unfold',
+    'unfold.contrib.filters',
+    'unfold.contrib.forms',
+    'unfold.contrib.inlines',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,7 +64,7 @@ ROOT_URLCONF = 'shopconfig.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,9 +125,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
-STRIPE_SECRET_KEY='***'
-STRIPE_PUBLISHABLE_KEY='***'
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -128,6 +139,26 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 MAILERS = {
     'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        'BACKEND': 'django.core.mail.backends.smtp.EmailBackend',
+        'OPTIONS': {
+            'host': os.environ.get('MAILTRAP_HOST', 'sandbox.smtp.mailtrap.io'),
+            'port': int(os.environ.get('MAILTRAP_PORT', 587)),
+            'use_tls': True,
+            'username': os.environ.get('MAILTRAP_USERNAME', ''),
+            'password': os.environ.get('MAILTRAP_PASSWORD', ''),
+        },
     },
+}
+
+# Unfold admin theme
+UNFOLD = {
+    'SITE_TITLE': 'Your Shop Admin',
+    'SITE_HEADER': 'Your Shop',
+    'SITE_SUBHEADER': 'Administration',
+    'SITE_SYMBOL': 'shopping_bag',
+    'SITE_URL': '/',
+    'THEME': 'dark',
+    'BORDER_RADIUS': '8px',
+    'SHOW_HISTORY': False,
+    'SHOW_VIEW_ON_SITE': True,
 }

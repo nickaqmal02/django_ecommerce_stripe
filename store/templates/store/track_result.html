@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order {{ order.order_id }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-black text-white">
+
+    <!-- ── NAV ── -->
+    <nav class="border-b border-gray-800 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="{% url 'store:product_list' %}" class="text-2xl font-black tracking-tighter uppercase">Your Shop</a>
+            <a href="{% url 'store:cart_view' %}" class="text-sm text-gray-300 hover:text-white">
+                Cart ({{ cart_count }})
+            </a>
+        </div>
+    </nav>
+
+    <!-- ── ORDER DETAILS ── -->
+    <div class="max-w-2xl mx-auto px-6 py-12">
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-black uppercase tracking-tighter mb-2">Order {{ order.order_id }}</h1>
+            <p class="text-gray-500 text-sm">Placed on {{ order.created_at|date:"d M Y, H:i" }}</p>
+        </div>
+
+        <!-- Payment Status -->
+        <div class="border border-gray-800 p-6 mb-6 text-center">
+            <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Payment Status</p>
+            <p class="text-xl font-bold {% if order.paid %}text-green-500{% else %}text-yellow-500{% endif %}">
+                {% if order.paid %}PAID{% else %}PENDING{% endif %}
+            </p>
+        </div>
+
+        <!-- Shipping Status -->
+        <div class="border border-gray-800 p-6 mb-6">
+            <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Shipping Status</p>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-gray-600 uppercase mb-1">Courier</p>
+                    <p class="font-bold">
+                        {% if order.courier == 'none' %}
+                            <span class="text-yellow-500">Not Assigned Yet</span>
+                        {% else %}
+                            {{ order.get_courier_display }}
+                        {% endif %}
+                    </p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-600 uppercase mb-1">Tracking Number</p>
+                    <p class="font-bold">
+                        {% if order.tracking_number %}
+                            {{ order.tracking_number }}
+                        {% else %}
+                            <span class="text-yellow-500">Not Available Yet</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            {% if order.courier == 'none' %}
+            <p class="text-sm text-gray-500 mt-4">
+                Your order is being prepared. Check back soon for tracking details.
+            </p>
+            {% else %}
+            <p class="text-sm text-gray-400 mt-4">
+                Use the tracking number above to track your package on
+                {{ order.get_courier_display }}'s website.
+            </p>
+            {% endif %}
+        </div>
+
+        <!-- Items -->
+        <div class="border border-gray-800 p-6 mb-6">
+            <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Items</p>
+            {% for item in order.items.all %}
+            <div class="flex justify-between py-2 border-b border-gray-900">
+                <span>{{ item.quantity }}x {{ item.product.name }}</span>
+                <span class="font-bold">{{ item.line_total_display }}</span>
+            </div>
+            {% endfor %}
+            <div class="flex justify-between pt-4">
+                <span class="text-gray-400">Total</span>
+                <span class="text-xl font-black">{{ order.total_display }}</span>
+            </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="border border-gray-800 p-6 mb-8">
+            <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Shipping Address</p>
+            <p class="font-bold">{{ order.name }}</p>
+            <p class="text-gray-400">{{ order.phone }}</p>
+            <p class="text-gray-400 mt-2">{{ order.address|linebreaksbr }}</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-4 justify-center">
+            <a href="{% url 'store:order_pdf' order.order_id %}"
+               class="bg-white text-black px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-gray-300 transition">
+                Download PDF
+            </a>
+            <a href="{% url 'store:track_order' %}"
+               class="border border-white px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black transition">
+                Track Another
+            </a>
+            <a href="{% url 'store:product_list' %}"
+               class="border border-gray-700 px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-gray-800 transition">
+                Back to Shop
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

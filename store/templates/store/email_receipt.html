@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; background: #f4f4f5; font-family: 'Helvetica', 'Arial', sans-serif;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+
+        <!-- Header -->
+        <div style="background: #111; color: #fff; padding: 30px; text-align: center;">
+            <h1 style="font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; margin: 0;">Your Shop</h1>
+            <p style="color: #999; font-size: 13px; margin-top: 5px;">Order Receipt</p>
+        </div>
+
+        <!-- Order Info -->
+        <div style="background: #fff; padding: 30px;">
+            <h2 style="font-size: 22px; font-weight: 900; margin-top: 0;">Thank you for your order!</h2>
+            <p style="color: #666; font-size: 15px;">Your payment has been confirmed. Here are your order details:</p>
+
+            <!-- Order ID + Status -->
+            <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #eee; color: #999; font-size: 13px; text-transform: uppercase;">Order ID</td>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: bold; text-align: right;">{{ order.order_id }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #eee; color: #999; font-size: 13px; text-transform: uppercase;">Date</td>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #eee; text-align: right;">{{ order.created_at|date:"d M Y, H:i" }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #eee; color: #999; font-size: 13px; text-transform: uppercase;">Payment</td>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #eee; text-align: right; font-weight: bold; color: #16a34a;">PAID</td>
+                </tr>
+            </table>
+
+            <!-- Items -->
+            <h3 style="font-size: 14px; text-transform: uppercase; color: #999; margin: 25px 0 10px 0;">Items</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; padding: 10px 0; border-bottom: 2px solid #111; font-size: 12px; text-transform: uppercase; color: #999;">Product</th>
+                        <th style="text-align: center; padding: 10px 0; border-bottom: 2px solid #111; font-size: 12px; text-transform: uppercase; color: #999;">Qty</th>
+                        <th style="text-align: right; padding: 10px 0; border-bottom: 2px solid #111; font-size: 12px; text-transform: uppercase; color: #999;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                        <td style="padding: 12px 0; border-bottom: 1px solid #eee; font-size: 15px;">{{ item.product.name }}</td>
+                        <td style="padding: 12px 0; border-bottom: 1px solid #eee; text-align: center; font-size: 15px;">{{ item.quantity }}</td>
+                        <td style="padding: 12px 0; border-bottom: 1px solid #eee; text-align: right; font-size: 15px; font-weight: bold;">{{ item.line_total_display }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="padding: 15px 0; font-size: 18px; font-weight: 900; text-align: right;">Total</td>
+                        <td style="padding: 15px 0; font-size: 18px; font-weight: 900; text-align: right;">{{ order.total_display }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- Shipping -->
+            <h3 style="font-size: 14px; text-transform: uppercase; color: #999; margin: 25px 0 10px 0;">Shipping Address</h3>
+            <div style="background: #f9f9f9; padding: 15px; border-left: 3px solid #111;">
+                <p style="margin: 0; font-weight: bold;">{{ order.name }}</p>
+                <p style="margin: 3px 0; color: #666;">{{ order.email }}</p>
+                <p style="margin: 3px 0; color: #666;">{{ order.phone }}</p>
+                <p style="margin: 5px 0 0 0; color: #666; white-space: pre-line;">{{ order.address }}</p>
+            </div>
+
+            <!-- Track Order -->
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="http://localhost:8090/track/" style="display: inline-block; background: #111; color: #fff; padding: 12px 30px; text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 13px; letter-spacing: 1px;">Track Your Order</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 20px; color: #999; font-size: 12px;">
+            <p>This receipt was sent automatically after your payment was confirmed.</p>
+            <p>&copy; 2026 Your Shop. All rights reserved.</p>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #333;
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .checkmark-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #22c55e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scale-in 0.5s ease-out forwards;
+        }
+        @keyframes scale-in {
+            0%   { transform: scale(0); opacity: 0; }
+            50%  { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        .checkmark {
+            width: 30px;
+            height: 18px;
+            border-left: 4px solid #22c55e;
+            border-bottom: 4px solid #22c55e;
+            transform: rotate(-45deg) translateY(-3px);
+            animation: draw-check 0.4s 0.3s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes draw-check {
+            0%   { opacity: 0; width: 0; height: 0; }
+            100% { opacity: 1; width: 30px; height: 18px; }
+        }
+
+        .fade-in { animation: fade-in 0.6s 0.8s ease-out forwards; opacity: 0; }
+        @keyframes fade-in { to { opacity: 1; } }
+        .hidden-anim { display: none; }
+    </style>
+</head>
+<body class="bg-black text-white">
+
+    <!-- ── LOADING ── -->
+    <div id="loader-screen" class="fixed inset-0 flex items-center justify-center">
+        <div class="text-center">
+            <div class="loader mx-auto mb-6"></div>
+            <p class="text-gray-400 text-sm uppercase tracking-widest">Processing Payment...</p>
+        </div>
+    </div>
+
+    <!-- ── SUCCESS ── -->
+    <div id="success-screen" class="hidden-anim max-w-2xl mx-auto px-6 py-24 text-center">
+        <div class="checkmark-circle mx-auto mb-8">
+            <div class="checkmark"></div>
+        </div>
+        <h1 class="text-4xl font-black uppercase tracking-tighter mb-4 fade-in">Order Confirmed</h1>
+        <p class="text-gray-400 text-lg mb-8 fade-in">Order ID: <span class="text-white font-bold">{{ order.order_id }}</span></p>
+
+        <!-- Status -->
+        <div class="inline-block border border-gray-700 px-8 py-4 mb-8 fade-in">
+            <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Payment Status</p>
+            <p class="text-xl font-bold {% if order.paid %}text-green-500{% else %}text-yellow-500{% endif %}">
+                {% if order.paid %}PAID{% else %}PENDING{% endif %}
+            </p>
+        </div>
+
+        <!-- Order Items -->
+        <div class="border border-gray-800 p-6 mb-8 text-left fade-in">
+            <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Items</p>
+            {% for item in order.items.all %}
+            <div class="flex justify-between py-2 border-b border-gray-900">
+                <span>{{ item.quantity }}x {{ item.product.name }}</span>
+                <span class="font-bold">{{ item.line_total_display }}</span>
+            </div>
+            {% endfor %}
+            <div class="flex justify-between pt-4">
+                <span class="text-gray-400">Total</span>
+                <span class="text-xl font-black">{{ order.total_display }}</span>
+            </div>
+        </div>
+
+        <!-- Shipping Details -->
+        <div class="border border-gray-800 p-6 mb-8 text-left fade-in">
+            <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Shipping Details</p>
+            <p class="font-bold">{{ order.name }}</p>
+            <p class="text-gray-400">{{ order.email }}</p>
+            <p class="text-gray-400">{{ order.phone }}</p>
+            <p class="text-gray-400 mt-2">{{ order.address|linebreaksbr }}</p>
+        </div>
+
+        <div class="flex gap-4 justify-center">
+            <a href="{% url 'store:order_pdf' order.order_id %}"
+               class="inline-block bg-white text-black px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-gray-300 transition fade-in">
+                Download Receipt
+            </a>
+            <a href="{% url 'store:product_list' %}"
+               class="inline-block border border-white px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black transition fade-in">
+                Back to Shop
+            </a>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(function() {
+            document.getElementById('loader-screen').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'block';
+        }, 1500);
+    </script>
+
+</body>
+</html>
