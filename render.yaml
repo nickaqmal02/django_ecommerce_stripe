@@ -3,12 +3,10 @@ services:
     name: your-shop
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn shopconfig.wsgi:application --bind 0.0.0.0:$PORT"
+    startCommand: "python manage.py migrate --noinput && python manage.py seed_data && gunicorn shopconfig.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
       - key: DJANGO_DEBUG
-        value: "False"
-      - key: DJANGO_ALLOWED_HOSTS
-        value: your-shop.onrender.com
+        value: "True"
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_PUBLISHABLE_KEY
