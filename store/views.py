@@ -333,18 +333,25 @@ Your Shop
 @csrf_exempt
 def webhook(request):
     """Stripe webhook — the source of truth for payment status"""
+    import logging
+    logger = logging.getLogger(__name__)
+
     if request.method == 'POST':
         payload = request.body
         sig_header = request.headers.get('Stripe-Signature', '')
         endpoint_secret = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
 
+        logger.info(f"Webhook received. Secret exists: {bool(endpoint_secret)}. Sig exists: {bool(sig_header)}")
+
         try:
             event = stripe.Webhook.construct_event(
                 payload, sig_header, endpoint_secret
             )
-        except ValueError:
+        except ValueError as e:
+            logger.error(f"Webhook ValueError: {e}")
             return HttpResponse(status=400)
-        except stripe.error.SignatureVerificationError:
+        except stripe.error.SignatureVerificationError as e:
+            logger.error(f"Webhook SignatureVerificationError: {e}")
             return HttpResponse(status=400)
 
         if event['type'] == 'checkout.session.completed':
