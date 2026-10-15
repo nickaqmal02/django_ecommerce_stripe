@@ -29,8 +29,12 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-i#)tj7-c5-v5cp
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
+# Temporarily force debug on to see errors
+DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,172.53.7.155,your-shop-erj6.onrender.com').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
+# Temporarily allow all hosts — change to specific domain after debugging
+ALLOWED_HOSTS = ['*'] if '*' in ALLOWED_HOSTS else ALLOWED_HOSTS
 
 
 # Application definition
