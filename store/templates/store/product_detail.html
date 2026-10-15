@@ -13,18 +13,18 @@
 <body class="bg-black text-white">
 
     <!-- ── NAV ── -->
-    <nav class="border-b border-gray-800 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="{% url 'store:product_list' %}" class="text-2xl font-black tracking-tighter uppercase">Your Shop</a>
-            <a href="{% url 'store:cart_view' %}" class="text-sm text-gray-300 hover:text-white">
+    <nav class="border-b border-gray-800 px-4 sm:px-6 py-4">
+        <div class="flex items-center justify-between">
+            <a href="{% url 'store:product_list' %}" class="text-xl sm:text-2xl font-black tracking-tighter uppercase">Your Shop</a>
+            <a href="{% url 'store:cart_view' %}" class="text-xs sm:text-sm text-gray-300 hover:text-white">
                 Cart ({{ cart_count }})
             </a>
         </div>
     </nav>
 
     <!-- ── PRODUCT DETAIL ── -->
-    <div class="max-w-7xl mx-auto px-6 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div class="w-full px-4 sm:px-6 py-8 sm:py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
 
             <!-- Image Gallery -->
             <div>
@@ -35,9 +35,9 @@
                                  class="w-full h-full object-cover">
                         </div>
                         {% if images|length > 1 %}
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 overflow-x-auto">
                             {% for img in images %}
-                            <div class="w-20 h-20 bg-gray-900 overflow-hidden cursor-pointer border-2 border-transparent hover:border-white transition"
+                            <div class="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-gray-900 overflow-hidden cursor-pointer border-2 border-transparent hover:border-white transition"
                                  onclick="document.getElementById('main-image').src='{{ img.image.url }}'">
                                 <img src="{{ img.image.url }}" alt="{{ product.name }}"
                                      class="w-full h-full object-cover">
@@ -46,7 +46,7 @@
                         </div>
                         {% endif %}
                     {% else %}
-                        <div class="aspect-square bg-gray-900 flex items-center justify-center text-gray-600 text-9xl font-black">
+                        <div class="aspect-square bg-gray-900 flex items-center justify-center text-gray-600 text-6xl sm:text-9xl font-black">
                             {{ product.name|first|upper }}
                         </div>
                     {% endif %}
@@ -55,12 +55,12 @@
 
             <!-- Info -->
             <div class="flex flex-col justify-center">
-                <h1 class="text-4xl font-black uppercase tracking-tighter mb-4">{{ product.name }}</h1>
-                <p class="text-gray-400 text-lg mb-6">{{ product.description }}</p>
-                <p class="text-3xl font-bold mb-8">{{ product.price_display }}</p>
+                <h1 class="text-3xl sm:text-4xl font-black uppercase tracking-tighter mb-4">{{ product.name }}</h1>
+                <p class="text-gray-400 text-base sm:text-lg mb-6">{{ product.description }}</p>
+                <p class="text-2xl sm:text-3xl font-bold mb-8">{{ product.price_display }}</p>
 
                 <a href="{% url 'store:add_to_cart' product.id %}"
-                   class="inline-block bg-white text-black px-12 py-4 text-sm font-bold uppercase tracking-wider hover:bg-gray-300 transition w-full text-center">
+                   class="inline-block bg-white text-black px-8 sm:px-12 py-4 text-sm font-bold uppercase tracking-wider hover:bg-gray-300 transition w-full text-center">
                     Add to Cart
                 </a>
 

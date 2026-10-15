@@ -64,52 +64,52 @@
     </div>
 
     <!-- ── SUCCESS ── -->
-    <div id="success-screen" class="hidden-anim max-w-2xl mx-auto px-6 py-24 text-center">
-        <div class="checkmark-circle mx-auto mb-8">
+    <div id="success-screen" class="hidden-anim max-w-2xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
+        <div class="checkmark-circle mx-auto mb-6 sm:mb-8">
             <div class="checkmark"></div>
         </div>
-        <h1 class="text-4xl font-black uppercase tracking-tighter mb-4 fade-in">Order Confirmed</h1>
-        <p class="text-gray-400 text-lg mb-8 fade-in">Order ID: <span class="text-white font-bold">{{ order.order_id }}</span></p>
+        <h1 class="text-2xl sm:text-4xl font-black uppercase tracking-tighter mb-3 sm:mb-4 fade-in">Order Confirmed</h1>
+        <p class="text-gray-400 text-base sm:text-lg mb-6 sm:mb-8 fade-in">Order ID: <span class="text-white font-bold">{{ order.order_id }}</span></p>
 
         <!-- Status -->
-        <div class="inline-block border border-gray-700 px-8 py-4 mb-8 fade-in">
-            <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Payment Status</p>
-            <p class="text-xl font-bold {% if order.paid %}text-green-500{% else %}text-yellow-500{% endif %}">
+        <div class="inline-block border border-gray-700 px-6 sm:px-8 py-3 sm:py-4 mb-6 sm:mb-8 fade-in">
+            <p class="text-xs sm:text-sm text-gray-500 uppercase tracking-wider mb-1">Payment Status</p>
+            <p class="text-lg sm:text-xl font-bold {% if order.paid %}text-green-500{% else %}text-yellow-500{% endif %}">
                 {% if order.paid %}PAID{% else %}PENDING{% endif %}
             </p>
         </div>
 
         <!-- Order Items -->
-        <div class="border border-gray-800 p-6 mb-8 text-left fade-in">
-            <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Items</p>
+        <div class="border border-gray-800 p-4 sm:p-6 mb-6 sm:mb-8 text-left fade-in">
+            <p class="text-xs sm:text-sm text-gray-500 uppercase tracking-wider mb-3 sm:mb-4">Items</p>
             {% for item in order.items.all %}
-            <div class="flex justify-between py-2 border-b border-gray-900">
+            <div class="flex justify-between py-2 border-b border-gray-900 text-sm sm:text-base">
                 <span>{{ item.quantity }}x {{ item.product.name }}</span>
                 <span class="font-bold">{{ item.line_total_display }}</span>
             </div>
             {% endfor %}
-            <div class="flex justify-between pt-4">
-                <span class="text-gray-400">Total</span>
-                <span class="text-xl font-black">{{ order.total_display }}</span>
+            <div class="flex justify-between pt-3 sm:pt-4">
+                <span class="text-gray-400 text-sm sm:text-base">Total</span>
+                <span class="text-lg sm:text-xl font-black">{{ order.total_display }}</span>
             </div>
         </div>
 
         <!-- Shipping Details -->
-        <div class="border border-gray-800 p-6 mb-8 text-left fade-in">
-            <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Shipping Details</p>
-            <p class="font-bold">{{ order.name }}</p>
-            <p class="text-gray-400">{{ order.email }}</p>
-            <p class="text-gray-400">{{ order.phone }}</p>
-            <p class="text-gray-400 mt-2">{{ order.address|linebreaksbr }}</p>
+        <div class="border border-gray-800 p-4 sm:p-6 mb-6 sm:mb-8 text-left fade-in">
+            <p class="text-xs sm:text-sm text-gray-500 uppercase tracking-wider mb-3 sm:mb-4">Shipping Details</p>
+            <p class="font-bold text-sm sm:text-base">{{ order.name }}</p>
+            <p class="text-gray-400 text-sm">{{ order.email }}</p>
+            <p class="text-gray-400 text-sm">{{ order.phone }}</p>
+            <p class="text-gray-400 mt-2 text-sm">{{ order.address|linebreaksbr }}</p>
         </div>
 
-        <div class="flex gap-4 justify-center">
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center fade-in">
             <a href="{% url 'store:order_pdf' order.order_id %}"
-               class="inline-block bg-white text-black px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-gray-300 transition fade-in">
+               class="inline-block bg-white text-black px-6 sm:px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-gray-300 transition">
                 Download Receipt
             </a>
             <a href="{% url 'store:product_list' %}"
-               class="inline-block border border-white px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black transition fade-in">
+               class="inline-block border border-white px-6 sm:px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black transition">
                 Back to Shop
             </a>
         </div>

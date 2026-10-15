@@ -13,30 +13,30 @@
 <body class="bg-black text-white">
 
     <!-- ── NAV ── -->
-    <nav class="border-b border-gray-800 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="{% url 'store:product_list' %}" class="text-2xl font-black tracking-tighter uppercase">Your Shop</a>
-            <a href="{% url 'store:cart_view' %}" class="text-sm text-gray-300 hover:text-white">
+    <nav class="border-b border-gray-800 px-4 sm:px-6 py-4">
+        <div class="flex items-center justify-between">
+            <a href="{% url 'store:product_list' %}" class="text-xl sm:text-2xl font-black tracking-tighter uppercase">Your Shop</a>
+            <a href="{% url 'store:cart_view' %}" class="text-xs sm:text-sm text-gray-300 hover:text-white">
                 Cart ({{ cart_count }})
             </a>
         </div>
     </nav>
 
     <!-- ── TRACK ORDER ── -->
-    <div class="max-w-2xl mx-auto px-6 py-24">
-        <h1 class="text-4xl font-black uppercase tracking-tighter mb-8 text-center">Track Your Order</h1>
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+        <h1 class="text-3xl sm:text-4xl font-black uppercase tracking-tighter mb-6 sm:mb-8 text-center">Track Your Order</h1>
 
         {% if error %}
-        <div class="border border-red-800 bg-red-950 text-red-300 px-6 py-4 mb-6 text-center">
+        <div class="border border-red-800 bg-red-950 text-red-300 px-4 sm:px-6 py-4 mb-6 text-center text-sm">
             {{ error }}
         </div>
         {% endif %}
 
         <form action="{% url 'store:track_result' %}" method="GET" class="space-y-4">
             <div>
-                <label class="block text-sm font-bold uppercase tracking-wider mb-2">Order ID</label>
+                <label class="block text-xs sm:text-sm font-bold uppercase tracking-wider mb-2">Order ID</label>
                 <input type="text" name="order_id" required placeholder="ORD-001"
-                       class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none uppercase">
+                       class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none uppercase text-sm sm:text-base">
             </div>
             <button type="submit"
                     class="w-full bg-white text-black py-4 text-sm font-bold uppercase tracking-wider hover:bg-gray-300 transition">
@@ -44,7 +44,7 @@
             </button>
         </form>
 
-        <p class="text-center text-sm text-gray-500 mt-6">
+        <p class="text-center text-xs sm:text-sm text-gray-500 mt-6">
             Your order ID was shown on the confirmation page after checkout.
         </p>
     </div>

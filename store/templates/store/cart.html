@@ -13,55 +13,55 @@
 <body class="bg-black text-white">
 
     <!-- ── NAV ── -->
-    <nav class="border-b border-gray-800 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="{% url 'store:product_list' %}" class="text-2xl font-black tracking-tighter uppercase">Your Shop</a>
-            <a href="{% url 'store:cart_view' %}" class="text-sm text-gray-300 hover:text-white">
+    <nav class="border-b border-gray-800 px-4 sm:px-6 py-4">
+        <div class="flex items-center justify-between">
+            <a href="{% url 'store:product_list' %}" class="text-xl sm:text-2xl font-black tracking-tighter uppercase">Your Shop</a>
+            <a href="{% url 'store:cart_view' %}" class="text-xs sm:text-sm text-gray-300 hover:text-white">
                 Cart ({{ cart_count }})
             </a>
         </div>
     </nav>
 
     <!-- ── CART ── -->
-    <div class="max-w-4xl mx-auto px-6 py-12">
-        <h1 class="text-3xl font-black uppercase tracking-tighter mb-8">Your Cart</h1>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tighter mb-6 sm:mb-8">Your Cart</h1>
 
         {% if items %}
-        <div class="space-y-6">
+        <div class="space-y-4 sm:space-y-6">
             {% for item in items %}
-            <div class="flex items-center gap-6 border-b border-gray-800 pb-6">
+            <div class="flex items-center gap-3 sm:gap-6 border-b border-gray-800 pb-4 sm:pb-6">
                 <!-- Image -->
-                <div class="w-24 h-24 bg-gray-900 overflow-hidden flex-shrink-0">
+                <div class="w-16 h-16 sm:w-24 sm:h-24 bg-gray-900 overflow-hidden flex-shrink-0">
                     {% if item.product.first_image %}
                         <img src="{{ item.product.first_image }}" alt="{{ item.product.name }}"
                              class="w-full h-full object-cover">
                     {% else %}
-                        <div class="w-full h-full flex items-center justify-center text-gray-600 text-2xl font-black">
+                        <div class="w-full h-full flex items-center justify-center text-gray-600 text-xl sm:text-2xl font-black">
                             {{ item.product.name|first|upper }}
                         </div>
                     {% endif %}
                 </div>
 
                 <!-- Info -->
-                <div class="flex-1">
-                    <h3 class="text-lg font-bold uppercase">{{ item.product.name }}</h3>
-                    <p class="text-gray-500 text-sm">{{ item.product.price_display }} each</p>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-base sm:text-lg font-bold uppercase truncate">{{ item.product.name }}</h3>
+                    <p class="text-gray-500 text-xs sm:text-sm">{{ item.product.price_display }} each</p>
                 </div>
 
                 <!-- Quantity update -->
-                <form action="{% url 'store:update_cart' item.product.id %}" method="POST" class="flex items-center gap-2">
+                <form action="{% url 'store:update_cart' item.product.id %}" method="POST" class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                     {% csrf_token %}
                     <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
-                           class="w-16 bg-gray-900 border border-gray-700 text-white text-center py-1">
+                           class="w-12 sm:w-16 bg-gray-900 border border-gray-700 text-white text-center py-1 text-sm">
                     <button type="submit"
-                            class="text-xs border border-gray-600 px-3 py-1 hover:bg-gray-800">
+                            class="text-xs border border-gray-600 px-2 sm:px-3 py-1 hover:bg-gray-800">
                         Update
                     </button>
                 </form>
 
                 <!-- Line total -->
-                <div class="text-right">
-                    <p class="text-xl font-bold">{{ item.line_total_display }}</p>
+                <div class="text-right flex-shrink-0">
+                    <p class="text-base sm:text-xl font-bold">{{ item.line_total_display }}</p>
                     <a href="{% url 'store:remove_from_cart' item.product.id %}"
                        class="text-xs text-red-500 hover:text-red-400">
                         Remove
@@ -72,20 +72,20 @@
         </div>
 
         <!-- Total + Checkout -->
-        <div class="mt-8 flex items-center justify-between">
+        <div class="mt-6 sm:mt-8 flex items-center justify-between">
             <div>
-                <p class="text-sm text-gray-500 uppercase tracking-wider">Total</p>
-                <p class="text-3xl font-black">{{ total_display }}</p>
+                <p class="text-xs sm:text-sm text-gray-500 uppercase tracking-wider">Total</p>
+                <p class="text-2xl sm:text-3xl font-black">{{ total_display }}</p>
             </div>
             <a href="{% url 'store:checkout_form' %}"
-               class="bg-white text-black px-12 py-4 text-sm font-bold uppercase tracking-wider hover:bg-gray-300 transition">
+               class="bg-white text-black px-6 sm:px-12 py-3 sm:py-4 text-sm font-bold uppercase tracking-wider hover:bg-gray-300 transition">
                 Checkout
             </a>
         </div>
 
         {% else %}
-        <div class="text-center py-24">
-            <p class="text-gray-500 text-lg mb-8">Your cart is empty</p>
+        <div class="text-center py-16 sm:py-24">
+            <p class="text-gray-500 text-base sm:text-lg mb-8">Your cart is empty</p>
             <a href="{% url 'store:product_list' %}"
                class="inline-block border border-white px-8 py-3 text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black transition">
                 Browse Products

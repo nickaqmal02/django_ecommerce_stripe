@@ -13,49 +13,49 @@
 <body class="bg-black text-white">
 
     <!-- ── NAV ── -->
-    <nav class="border-b border-gray-800 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="{% url 'store:product_list' %}" class="text-2xl font-black tracking-tighter uppercase">Your Shop</a>
-            <a href="{% url 'store:cart_view' %}" class="text-sm text-gray-300 hover:text-white">
+    <nav class="border-b border-gray-800 px-4 sm:px-6 py-4">
+        <div class="flex items-center justify-between">
+            <a href="{% url 'store:product_list' %}" class="text-xl sm:text-2xl font-black tracking-tighter uppercase">Your Shop</a>
+            <a href="{% url 'store:cart_view' %}" class="text-xs sm:text-sm text-gray-300 hover:text-white">
                 Cart ({{ cart_count }})
             </a>
         </div>
     </nav>
 
     <!-- ── CHECKOUT FORM ── -->
-    <div class="max-w-2xl mx-auto px-6 py-12">
-        <h1 class="text-3xl font-black uppercase tracking-tighter mb-8">Checkout</h1>
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tighter mb-6 sm:mb-8">Checkout</h1>
 
-        <div class="mb-8 border border-gray-800 p-6">
-            <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Order Total</p>
-            <p class="text-3xl font-black">{{ total_display }}</p>
+        <div class="mb-6 sm:mb-8 border border-gray-800 p-4 sm:p-6">
+            <p class="text-xs sm:text-sm text-gray-500 uppercase tracking-wider mb-1">Order Total</p>
+            <p class="text-2xl sm:text-3xl font-black">{{ total_display }}</p>
         </div>
 
-        <form action="{% url 'store:process_checkout' %}" method="POST" class="space-y-6">
+        <form action="{% url 'store:process_checkout' %}" method="POST" class="space-y-4 sm:space-y-6">
             {% csrf_token %}
 
             <div>
-                <label class="block text-sm font-bold uppercase tracking-wider mb-2">Email</label>
+                <label class="block text-xs sm:text-sm font-bold uppercase tracking-wider mb-2">Email</label>
                 <input type="email" name="email" required placeholder="customer@example.com"
-                       class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none">
+                       class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none text-sm sm:text-base">
             </div>
 
             <div>
-                <label class="block text-sm font-bold uppercase tracking-wider mb-2">Full Name</label>
+                <label class="block text-xs sm:text-sm font-bold uppercase tracking-wider mb-2">Full Name</label>
                 <input type="text" name="name" required placeholder="John Doe"
-                       class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none">
+                       class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none text-sm sm:text-base">
             </div>
 
             <div>
-                <label class="block text-sm font-bold uppercase tracking-wider mb-2">Phone Number</label>
+                <label class="block text-xs sm:text-sm font-bold uppercase tracking-wider mb-2">Phone Number</label>
                 <input type="tel" name="phone" required placeholder="012-345 6789"
-                       class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none">
+                       class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none text-sm sm:text-base">
             </div>
 
             <div>
-                <label class="block text-sm font-bold uppercase tracking-wider mb-2">Shipping Address</label>
+                <label class="block text-xs sm:text-sm font-bold uppercase tracking-wider mb-2">Shipping Address</label>
                 <textarea name="address" required rows="4" placeholder="123 Jalan Example&#10;Taman Test&#10;57000 Kuala Lumpur&#10;Malaysia"
-                          class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none"></textarea>
+                          class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 focus:border-white focus:outline-none text-sm sm:text-base"></textarea>
             </div>
 
             <button type="submit"
