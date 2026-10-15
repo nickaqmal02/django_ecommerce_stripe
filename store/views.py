@@ -356,8 +356,9 @@ def webhook(request):
 
         if event['type'] == 'checkout.session.completed':
             session = event['data']['object']
+            session_id = session['id'] if isinstance(session, dict) else session.id
             try:
-                order = Order.objects.get(stripe_session_id=session.id)
+                order = Order.objects.get(stripe_session_id=session_id)
                 order.paid = True
                 order.save()
 
