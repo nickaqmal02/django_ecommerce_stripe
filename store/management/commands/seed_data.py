@@ -7,10 +7,18 @@ class Command(BaseCommand):
     help = 'Seed the database with categories, products, and a superuser'
 
     def handle(self, *args, **options):
-        # Create superuser
-        if not User.objects.filter(username='admin').exists():
-            User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
-            self.stdout.write(self.style.SUCCESS('Superuser created: admin / admin123'))
+        username: str = os.environ.get('DJANGO_SUPERUSER_ADMIN', '')
+        email: str = os.environ.get('DJANGO_SUPERUSER_EMAIL', '')
+        password: str = os.environ.get('DJANGO_SUPERUSER_PASSWORD', '')
+
+        # for better if else 
+        if not all([username, email, password]):
+            self.stdout.write(self.style.WARNING(
+                'Superuser env vars not set - skipping superuser creation'
+            ))
+        elif not User.objects.filter(username=username).exists():
+            User.objects.create_superuser(username, email, password)
+            self.stdout.write(self.style.SUCCESS(f'Superuser created: {username}'))
         else:
             self.stdout.write('Superuser already exists')
 
