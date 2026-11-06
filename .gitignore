@@ -33,6 +33,9 @@ local_settings.py
 # Privacy
 Privacy.md
 
+# Personal Lesson
+LessonProject.md
+
 # IDE
 .vscode/
 .idea/
