@@ -2,6 +2,9 @@
 
 A simple e-commerce app with Stripe payment gateway, cart, checkout, order tracking, and PDF receipts.
 
+#### the link
+https://your-shop-erj6.onrender.com/
+
 ## Tech Stack
 
 - Django 6.1
