@@ -32,7 +32,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 # Temporarily force debug on to see errors
 DEBUG = True
 
-ALLOWED_HOSTS = ['your-shop-erj6.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['thetoters.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
