@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: your-shop
+    name: TheToters
     runtime: python
     buildCommand: "./build.sh"
     startCommand: "python manage.py migrate --noinput && python manage.py seed_data && gunicorn shopconfig.wsgi:application --bind 0.0.0.0:$PORT"
