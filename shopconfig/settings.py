@@ -29,10 +29,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-i#)tj7-c5-v5cp
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
-# Temporarily force debug on to see errors
-DEBUG = True
 
 ALLOWED_HOSTS = ['thetoters.onrender.com', 'localhost', '127.0.0.1']
+
+CSRF_TRUSTED_ORIGINS = ['https://thetoters.onrender.com']
 
 
 # Application definition
